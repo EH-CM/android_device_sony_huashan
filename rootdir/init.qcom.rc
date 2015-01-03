@@ -145,6 +145,20 @@ on boot
     # create symlink for fb1 as HDMI
     symlink /dev/graphics/fb1 /dev/graphics/hdmi
 
+    # Load tcp congestion algorithm modules
+    insmod /system/lib/modules/tcp_bic.ko
+    insmod /system/lib/modules/tcp_highspeed.ko
+    insmod /system/lib/modules/tcp_htcp.ko
+    insmod /system/lib/modules/tcp_hybla.ko
+    insmod /system/lib/modules/tcp_illinois.ko
+    insmod /system/lib/modules/tcp_lp.ko
+    insmod /system/lib/modules/tcp_scalable.ko
+    insmod /system/lib/modules/tcp_vegas.ko
+    insmod /system/lib/modules/tcp_veno.ko
+    insmod /system/lib/modules/tcp_westwood.ko
+    insmod /system/lib/modules/tcp_yeah.ko
+
+
     # Change owner and group to get adopter/device ids from MHL driver
     chown system system /sys/class/mhl/sii8334/adopter_id
     chown system system /sys/class/mhl/sii8334/device_id
@@ -588,6 +602,13 @@ service setup_fs /system/bin/setup_fs /dev/block/platform/msm_sdcc.1/by-name/Use
     user root
     group root
     oneshot
+	
+# Xperia SP glove mod enabled
+ on property:sys.boot_completed=1
+     chmod 664 /sys/devices/i2c-3/3-0024/main_ttsp_core.cyttsp4_i2c_adapter/signal_disparity
+     write /sys/devices/i2c-3/3-0024/main_ttsp_core.cyttsp4_i2c_adapter/signal_disparity 0
+     chmod 664 /sys/devices/i2c-3/3-0024/main_ttsp_core.cyttsp4_i2c_adapter/finger_threshold
+     write /sys/devices/i2c-3/3-0024/main_ttsp_core.cyttsp4_i2c_adapter/finger_threshold 100
 
 on property:sys.perf.profile=0
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
